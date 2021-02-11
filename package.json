@@ -1,0 +1,22 @@
+{
+  "name": "@tinypudding/firebase-express-template",
+  "version": "1.0.0",
+  "description": "A template for website development using Firebase.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TinyPudding/Firebase-Express-Template.git"
+  },
+  "keywords": [
+    "express"
+  ],
+  "author": "Yasmin Seidel (JasminDreasond)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TinyPudding/Firebase-Express-Template/issues"
+  },
+  "homepage": "https://github.com/TinyPudding/Firebase-Express-Template#readme"
+}
