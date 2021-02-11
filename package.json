@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/TinyPudding/Firebase-Express-Template#readme",
   "dependencies": {
+    "@tinypudding/puddy-lib": "^1.1.17",
     "for-promise": "^1.3.2",
     "lodash": "^4.17.20"
   }
