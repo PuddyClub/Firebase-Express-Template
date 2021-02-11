@@ -1,0 +1,13 @@
+module.exports = function (app, data) {
+
+    // Module
+    const tinyModule = require('@tinypudding/i18');
+    const i18 = new tinyModule(app, data);
+
+    // Install
+    app.use(i18.insert());
+
+    // Complete
+    return i18;
+
+};
