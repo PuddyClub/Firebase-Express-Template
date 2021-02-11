@@ -4,8 +4,7 @@ module.exports = function (data) {
     const app = require('./files/constructor')(data.main);
 
     // Helmet
-    const helmet = require("helmet");
-    app.use(helmet(data.helmet));
+    if (data.helmet) { require('./files/helmet')(app, data.helmet); }
 
     // Firebase
     const firebase = require('./files/firebase')(data.firebase);
@@ -28,7 +27,7 @@ module.exports = function (data) {
 
     // Firebase Auth
     let firebaseOAuth;
-    if(data.firebaseOAuth) {
+    if (data.firebaseOAuth) {
         firebaseOAuth = require('./files/firebase-auth')(app, data.fileCfg, firebase, data.vars);
     }
 
