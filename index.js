@@ -21,6 +21,8 @@ module.exports = function (data) {
 
         // Start Module
         data.discordOAuth2.firebase = firebase;
+        if (!data.discordOAuth2.cfg) { data.discordOAuth2.cfg = {}; }
+        data.discordOAuth2.cfg.domain = data.main.domainValidator.domain;
         dsSession = require('./files/discord-oauth2')(app, data.errorPage, data.vars, data.discordOAuth2, data.firebaseWeb, data.cfg);
 
     }
