@@ -14,7 +14,7 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
         if (!data.discord) { data.discord = {}; }
         if (!data.discord.cfg) { data.discord.cfg = {}; }
         data.discord.cfg.errorCallback = function (err, req, res) {
-            return data.errorPage(req, res, err, webCfg, firebaseWeb);
+            return errorPage(req, res, err, webCfg, firebaseWeb);
         }
     }
 
