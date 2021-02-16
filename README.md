@@ -303,6 +303,6 @@ const app = expressTemplate({
 
 });
 
-// // Website Function
+// Website Function
 exports.example = functions.https.onRequest(app);
 ```
