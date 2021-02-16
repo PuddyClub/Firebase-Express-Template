@@ -188,7 +188,7 @@ const app = expressTemplate({
 
     },
 
-    // Discord OAuth2
+    // Discord OAuth2 (You need the module cookie-session installed)
     // https://www.npmjs.com/package/@tinypudding/discord-oauth2
     discordOAuth2: {
 
