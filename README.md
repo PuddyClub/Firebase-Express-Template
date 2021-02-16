@@ -17,7 +17,7 @@ A template for website development using Firebase.
 
 ## Example
 
-config.json
+### config.json
 These are the Firebase Server settings for the @tinypudding/firebase-lib module and the domain validator from the @tinypudding/puddy-lib.
 ```json
 {
@@ -33,7 +33,7 @@ These are the Firebase Server settings for the @tinypudding/firebase-lib module 
 }
 ```
 
-firebase_web.json
+### firebase_web.json
 These are the Firebase Client settings that are in your website.
 ```json
 {
@@ -44,7 +44,7 @@ These are the Firebase Client settings that are in your website.
 }
 ```
 
-index.js
+### index.js
 ```js
 // Prepare Modules
 const functions = require('firebase-functions');
