@@ -146,27 +146,33 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
                                 if (typeof result.client_id === "string") {
                                     discordAuthCfg.auth.client_id = result.client_id;
                                     discordAuthItem.auth.client_id = result.client_id;
+                                    discordAuthItem.commandAuth.client_id = result.client_id;
                                 } else {
                                     discordAuthCfg.auth.client_id = null;
                                     discordAuthItem.auth.client_id = null;
+                                    discordAuthItem.commandAuth.client_id = null;
                                 }
 
                                 // Client Secret
                                 if (typeof result.client_secret === "string") {
                                     discordAuthCfg.auth.client_secret = result.client_secret;
                                     discordAuthItem.auth.client_secret = result.client_secret;
+                                    discordAuthItem.commandAuth.client_secret = result.client_secret;
                                 } else {
                                     discordAuthCfg.auth.client_secret = null;
                                     discordAuthItem.auth.client_secret = null;
+                                    discordAuthItem.commandAuth.client_secret = null;
                                 }
 
                                 // Public Key
                                 if (typeof result.public_key === "string") {
                                     discordAuthCfg.auth.public_key = result.public_key;
                                     discordAuthItem.auth.public_key = result.public_key;
+                                    discordAuthItem.commandAuth.public_key = result.public_key;
                                 } else {
                                     discordAuthCfg.auth.public_key = null;
                                     discordAuthItem.auth.public_key = null;
+                                    discordAuthItem.commandAuth.public_key = null;
                                 }
 
                             }
@@ -178,9 +184,11 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
                                 if (typeof result.token === "string") {
                                     discordAuthCfg.auth.bot_token = result.token;
                                     discordAuthItem.auth.bot_token = result.token;
+                                    discordAuthItem.commandAuth.bot_token = result.token;
                                 } else {
                                     discordAuthCfg.auth.bot_token = null;
                                     discordAuthItem.auth.bot_token = null;
+                                    discordAuthItem.commandAuth.bot_token = null;
                                 }
 
                             }
@@ -199,6 +207,10 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
                                 discordAuthItem.auth.client_id = null;
                                 discordAuthItem.auth.client_secret = null;
                                 discordAuthItem.auth.public_key = null;
+                                
+                                discordAuthItem.commandAuth.client_id = null;
+                                discordAuthItem.commandAuth.client_secret = null;
+                                discordAuthItem.commandAuth.public_key = null;
 
                             }
 
@@ -206,6 +218,7 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
                             else if (item === "bot") {
                                 discordAuthCfg.auth.bot_token = null;
                                 discordAuthItem.auth.bot_token = null;
+                                discordAuthItem.commandAuth.bot_token = null;
                             }
 
                         }
