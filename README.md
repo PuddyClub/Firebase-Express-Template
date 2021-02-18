@@ -194,9 +194,19 @@ const app = expressTemplate({
 
         // Database to get the bot data
         database: {
+            
+            // Bot Path
             botPath: 'bots',
+
+            // App Path
             appPath: 'apps',
-            name: 'tiny-boop'
+
+            // Database Name
+            name: 'tiny-boop',
+            
+            // Paths that are authorized to read the database to obtain the Auth without needing the user logged on. You can use the value "*" to allow the entire website.
+            pathNoUser: [],
+        
         },
 
         // Localhost to test

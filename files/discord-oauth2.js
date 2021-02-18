@@ -107,26 +107,47 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
     if (data.database) {
         app.use(async function (req, res, next) {
 
+            // Check Path
+            let allowedPath = false;
+            if (Array.isArray(firebaseDatabase.pathNoUser)) {
+                for (const item in firebaseDatabase.pathNoUser) {
+                    if (
+                        typeof firebaseDatabase.pathNoUser[item] === "string" &&
+                        (req.url === firebaseDatabase.pathNoUser[item] || req.url.startsWith(firebaseDatabase.pathNoUser[item] + '?'))
+                    ) {
+                        allowedPath = true;
+                        break;
+                    }
+                }
+            } else if (typeof firebaseDatabase.pathNoUser === "string" && firebaseDatabase.pathNoUser === "*") {
+                allowedPath = true;
+            }
+
             // Check Auth
             let needNewAuth = false;
-            for (const item in discordAuthItem.auth) {
-                if (typeof discordAuthItem.auth[item] === "string" && discordAuthItem.auth[item].length < 1 && item !== 'bot_token') {
-                    needNewAuth = true;
-                    break;
+            if (!allowedPath) {
+                for (const item in discordAuthItem.auth) {
+                    if (typeof discordAuthItem.auth[item] === "string" && discordAuthItem.auth[item].length < 1 && item !== 'bot_token') {
+                        needNewAuth = true;
+                        break;
+                    }
                 }
             }
 
             // Validator
             if (
-                needNewAuth &&
+                allowedPath ||
                 (
-                    (typeof req.session[discordAuthCfg.vars.access_token] === "string" && req.session[discordAuthCfg.vars.access_token].length > 0) ||
-                    req.url.startsWith(discordAuthCfg.url.redirect + '?') ||
-                    req.url.startsWith(discordAuthCfg.url.login + '?') ||
-                    req.url.startsWith(discordAuthCfg.url.logout + '?') ||
-                    req.url === discordAuthCfg.url.redirect ||
-                    req.url === discordAuthCfg.url.login ||
-                    req.url === discordAuthCfg.url.logout
+                    needNewAuth &&
+                    (
+                        (typeof req.session[discordAuthCfg.vars.access_token] === "string" && req.session[discordAuthCfg.vars.access_token].length > 0) ||
+                        req.url.startsWith(discordAuthCfg.url.redirect + '?') ||
+                        req.url.startsWith(discordAuthCfg.url.login + '?') ||
+                        req.url.startsWith(discordAuthCfg.url.logout + '?') ||
+                        req.url === discordAuthCfg.url.redirect ||
+                        req.url === discordAuthCfg.url.login ||
+                        req.url === discordAuthCfg.url.logout
+                    )
                 )
             ) {
 
