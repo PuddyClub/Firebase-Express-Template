@@ -207,7 +207,7 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
                                 discordAuthItem.auth.client_id = null;
                                 discordAuthItem.auth.client_secret = null;
                                 discordAuthItem.auth.public_key = null;
-                                
+
                                 discordAuthItem.commandAuth.client_id = null;
                                 discordAuthItem.commandAuth.client_secret = null;
                                 discordAuthItem.commandAuth.public_key = null;
@@ -251,6 +251,25 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
 
     // Start Discord Auth
     const discordAuthItem = require('@tinypudding/discord-oauth2/template/cookie-session')(app, discordAuthCfg);
+
+    // Insert Functions
+    app.use(function (req, res, next) {
+
+        // The Functions
+        req.discord_session.bot = {
+
+            // Get User
+            getUser: function (userID = '@me', version = '') {
+                return require('@tinypudding/discord-oauth2/api/getUser')(req.discord_session.auth.app.bot_token, 'Bot', userID, version);
+            }
+
+        };
+
+        // Complete
+        next();
+        return;
+
+    });
 
     // Complete
     return function (data = {}) {
