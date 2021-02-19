@@ -5,9 +5,9 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
 
     // Prepare Discord JS
     const Discord = optinalRequire('discord.js');
-    let bot;
+    let djs_bot;
 
-    if (Discord) { bot = new Discord.Client(); }
+    if (Discord) { djs_bot = new Discord.Client(); }
 
     // Discord Redirect
     let discord_redirect = 'http://' + data.localhost + data.discord.url.redirect;
@@ -290,10 +290,15 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
             req.discord_session.bot = function () {
 
                 // Get Discord JS
-                req.discord_session.bot = bot;
+                req.discord_session.bot = djs_bot;
+
+                // Get Client
                 if (req.discord_session.auth && req.discord_session.auth.app && (typeof req.discord_session.auth.app.bot_token === "string" || typeof req.discord_session.auth.app.bot_token === "number")) {
                     req.discord_session.bot.token = req.discord_session.auth.app.bot_token;
                 }
+
+                // Module
+                req.discord_session.module = Discord;
 
             };
         }
