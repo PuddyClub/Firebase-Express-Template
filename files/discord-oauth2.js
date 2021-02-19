@@ -3,6 +3,12 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
     // Prepare Optional Module
     const optinalRequire = require('@tinypudding/puddy-lib/get/module');
 
+    // Prepare Discord JS
+    const Discord = optinalRequire('discord.js');
+    let bot;
+
+    if (Discord) { bot = new Discord.Client(); }
+
     // Discord Redirect
     let discord_redirect = 'http://' + data.localhost + data.discord.url.redirect;
     if (!require('@tinypudding/firebase-lib/isEmulator')()) {
@@ -280,12 +286,11 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
     app.use(function (req, res, next) {
 
         // Discord JS
-        const Discord = optinalRequire('discord.js');
         if (Discord) {
             req.discord_session.bot = function () {
 
                 // Get Discord JS
-                req.discord_session.bot = new Discord.Client();
+                req.discord_session.bot = bot;
                 if (req.discord_session.auth && req.discord_session.auth.app && (typeof req.discord_session.auth.app.bot_token === "string" || typeof req.discord_session.auth.app.bot_token === "number")) {
                     req.discord_session.bot.token = req.discord_session.auth.app.bot_token;
                 }
