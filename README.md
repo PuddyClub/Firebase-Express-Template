@@ -188,8 +188,15 @@ const app = expressTemplate({
 
     },
 
-    // Discord OAuth2 (You need the module cookie-session installed)
-    // https://www.npmjs.com/package/@tinypudding/discord-oauth2
+    /* 
+    
+        Discord OAuth2 (You need the module cookie-session installed)
+
+        If you insert a bot token and have Discord.JS (https://discord.js.org/) installed, req.discord_session.bot will return a Discord.JS Client. (Do not forget that this Discord.JS Client is not connected to webSockets so as not to allow your Firebase application to be trying to make various Websocket connections with each request on your website.)
+
+        https://www.npmjs.com/package/@tinypudding/discord-oauth2
+    
+    */
     discordOAuth2: {
 
         // Database to get the bot data

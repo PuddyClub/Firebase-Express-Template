@@ -1,5 +1,8 @@
 module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
 
+    // Prepare Optional Module
+    const optinalRequire = require('@tinypudding/puddy-lib/get/module');
+
     // Discord Redirect
     let discord_redirect = 'http://' + data.localhost + data.discord.url.redirect;
     if (!require('@tinypudding/firebase-lib/isEmulator')()) {
@@ -276,15 +279,27 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
     // Insert Functions
     app.use(function (req, res, next) {
 
-        // The Functions
-        req.discord_session.bot = {
+        // Discord JS
+        const Discord = optinalRequire('discord.js');
+        if (Discord && req.discord_session.auth && req.discord_session.auth.app && (typeof req.discord_session.auth.app.bot_token === "string" || typeof req.discord_session.auth.app.bot_token === "number")) {
+            req.discord_session.bot = new Discord.Client();
+            req.discord_session.bot.token = req.discord_session.auth.app.bot_token;
+        }
 
-            // Get User
-            getUser: function (userID = '@me', version = '') {
-                return require('@tinypudding/discord-oauth2/api/getUser')(req.discord_session.auth.app.bot_token, 'Bot', userID, version);
-            }
+        // Nope
+        else {
 
-        };
+            // The Functions
+            req.discord_session.bot = {
+
+                // Get User
+                getUser: function (userID = '@me', version = '') {
+                    return require('@tinypudding/discord-oauth2/api/getUser')(req.discord_session.auth.app.bot_token, 'Bot', userID, version);
+                }
+
+            };
+
+        }
 
         // Complete
         next();
