@@ -281,9 +281,16 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
 
         // Discord JS
         const Discord = optinalRequire('discord.js');
-        if (Discord && req.discord_session.auth && req.discord_session.auth.app && (typeof req.discord_session.auth.app.bot_token === "string" || typeof req.discord_session.auth.app.bot_token === "number")) {
-            req.discord_session.bot = new Discord.Client();
-            req.discord_session.bot.token = req.discord_session.auth.app.bot_token;
+        if (Discord) {
+            req.discord_session.bot = function () {
+
+                // Get Discord JS
+                req.discord_session.bot = new Discord.Client();
+                if (req.discord_session.auth && req.discord_session.auth.app && (typeof req.discord_session.auth.app.bot_token === "string" || typeof req.discord_session.auth.app.bot_token === "number")) {
+                    req.discord_session.bot.token = req.discord_session.auth.app.bot_token;
+                }
+
+            };
         }
 
         // Nope
