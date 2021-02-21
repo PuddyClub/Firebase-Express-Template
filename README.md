@@ -68,12 +68,39 @@ const app = expressTemplate({
 
     // Error Page
     errorPage: (req, res, data, cfg, firebaseWeb) => {
+
+        // Is a Error Page
+        if (res && req) {
+
+            // Logger
+            const logger = require('@tinypudding/firebase-lib/logger');
+
+            // Prepare Result
+            const result = { code: data.code };
+
+            // Get Error Message
+            if (data.message) { result.text = data.message; }
+            else if (data.err && data.err.message) { result.text = data.err.message; }
+            else { result.text = '???'; }
+
+            // Log
+            if (data.code !== 404) {
+                let errorData = null;
+                if (data.err) { errorData = data.err; }
+                else if (data.message) { errorData = new Error(data.message); }
+                else { errorData = new Error('Unknown Error'); }
+                errorData.code = data.code;
+                logger.error(errorData);
+            }
+
+            // Send Error Page
+            return res.json(result);
+
+        } 
         
-        // Exist Req and Res in this request? Send the error page.
-        if (res && req) { return res.json(data); } 
-        
-        // Nope? You can work with the data values only here.
+        // Nothing
         else { return; }
+
     },
 
     // Website Middleware
