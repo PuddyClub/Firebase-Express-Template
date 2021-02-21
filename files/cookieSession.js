@@ -1,7 +1,7 @@
 module.exports = function (app, data, installCookies = true) {
 
     // Prepare Module
-    const cookieSession = require('cookie-session');
+    const cookieSession = require('firebase-cookie-session');
 
     // Lodash Module
     const _ = require('lodash');
