@@ -10,6 +10,8 @@ module.exports = function (data) {
         domainValidator: {},
         invalidDomainCallback: function (req, res, next) {
             const error_page = require('@tinypudding/puddy-lib/http/HTTP-1.0');
+            const logger = require('@tinypudding/firebase-lib/logger');
+            logger.error(new Error('Invalid Domain! ' + req.firebase_web_session.domain));
             return error_page.send(res, 403);
         }
     });
@@ -40,7 +42,7 @@ module.exports = function (data) {
 
                 // Normal Domain
                 let httpMode = 'https';
-                if(!domainResult.domain.startsWith('localhost:')){
+                if (!domainResult.domain.startsWith('localhost:')) {
                     httpMode = 'http';
                 }
 
