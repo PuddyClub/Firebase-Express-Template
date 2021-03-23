@@ -7,7 +7,8 @@ module.exports = function (data) {
     if (data.helmet) { require('./files/helmet')(app, data.helmet); }
 
     // Firebase
-    const firebase = require('./files/firebase')(data.firebase);
+    let firebase;
+    if (data.firebase) { firebase = require('./files/firebase')(data.firebase); }
 
     // Prepare Cookie Session
     const cookieSession = require('./files/cookieSession')(app, data.cookieSession);
