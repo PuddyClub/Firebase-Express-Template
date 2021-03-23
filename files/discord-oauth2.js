@@ -2,6 +2,7 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
 
     // Prepare Optional Module
     const optinalRequire = require('@tinypudding/puddy-lib/get/module');
+    const isEmulator = optinalRequire('@tinypudding/firebase-lib/isEmulator');
 
     // Prepare Discord JS
     const Discord = optinalRequire('discord.js');
@@ -11,7 +12,7 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
 
     // Discord Redirect
     let discord_redirect = 'http://' + data.localhost + data.discord.url.redirect;
-    if (!require('@tinypudding/firebase-lib/isEmulator')()) {
+    if (typeof isEmulator !== "function" || !isEmulator()) {
         discord_redirect = `https://${data.cfg.domain}${data.discord.url.redirect}`;
     }
 
