@@ -121,6 +121,9 @@ const app = expressTemplate({
             res.render('test');
             return;
         });
+
+        // Complete
+        return web.fn();
      
     },
     
