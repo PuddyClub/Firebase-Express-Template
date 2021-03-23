@@ -8,10 +8,17 @@ module.exports = function (data) {
 
     // Firebase
     let firebase;
-    if (data.firebase) { firebase = require('./files/firebase')(data.firebase); }
+    let cookieSession;
+    if (data.firebase) {
 
-    // Prepare Cookie Session
-    const cookieSession = require('./files/cookieSession')(app, data.cookieSession);
+        // Get Firebase
+        firebase = require('./files/firebase')(data.firebase);
+        if (data.cookieSession) { cookieSession = require('./files/cookieSession')(app, data.cookieSession); }
+
+    }
+
+    // Nope
+    else if (data.cookieSession) { cookieSession = data.cookieSession; }
 
     // CSRF Token
     require('./files/csrftoken').apply({ app: app }, data.csrftoken.module);
