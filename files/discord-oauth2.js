@@ -28,18 +28,20 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
     }
 
     // Fix URL Redirect
-    const authURL = require('./firebaseJSONValidator')(firebaseWeb);
-    if (typeof data.discord.cfg.redirect.login === "function") {
-        const loginFunction = data.discord.cfg.redirect.login;
-        data.discord.cfg.redirect.login = function (data, req, res) {
-            return loginFunction(data, req, res, authURL, webCfg);
+    if (data.firebase) {
+        const authURL = require('./firebaseJSONValidator')(firebaseWeb);
+        if (typeof data.discord.cfg.redirect.login === "function") {
+            const loginFunction = data.discord.cfg.redirect.login;
+            data.discord.cfg.redirect.login = function (data, req, res) {
+                return loginFunction(data, req, res, authURL, webCfg);
+            }
         }
-    }
 
-    if (typeof data.discord.cfg.redirect.logout === "function") {
-        const logoutFunction = data.discord.cfg.redirect.logout;
-        data.discord.cfg.redirect.logout = function (data, req, res) {
-            return logoutFunction(data, req, res, authURL, webCfg);
+        if (typeof data.discord.cfg.redirect.logout === "function") {
+            const logoutFunction = data.discord.cfg.redirect.logout;
+            data.discord.cfg.redirect.logout = function (data, req, res) {
+                return logoutFunction(data, req, res, authURL, webCfg);
+            }
         }
     }
 
@@ -96,7 +98,7 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
     });
 
     // Install Database
-    if (!data.firebase.db && data.database) { data.firebase.db = data.firebase.root.database(); }
+    if (data.firebase) { if (!data.firebase.db && data.database) { data.firebase.db = data.firebase.root.database(); } }
 
     // Get App
     const dbCheck = {};
