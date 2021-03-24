@@ -34,34 +34,29 @@ module.exports = function (data) {
             ip: getUserIP(req, { isFirebase: true })
         };
 
+        // Fix Redirect
+        res.redirectDomain = function () {
+
+            // Normal Domain
+            let httpMode = 'https';
+            if (!domainResult.domain.startsWith('localhost:')) {
+                httpMode = 'http';
+            }
+
+            // Normal
+            if (arguments.length < 2) {
+                return res.redirect(`${httpMode}://${domainResult.domain}${arguments[0]}`);
+            }
+
+            // Nope
+            else {
+                return res.redirect(arguments[0], `${httpMode}://${domainResult.domain}${arguments[1]}`);
+            }
+
+        };
+
         // Verified
-        if (domainResult.verified && !domainResult.isStaticPath) {
-
-            // Fix Redirect
-            res.redirectDomain = function () {
-
-                // Normal Domain
-                let httpMode = 'https';
-                if (!domainResult.domain.startsWith('localhost:')) {
-                    httpMode = 'http';
-                }
-
-                // Normal
-                if (arguments.length < 2) {
-                    return res.redirect(`${httpMode}://${domainResult.domain}${arguments[0]}`);
-                }
-
-                // Nope
-                else {
-                    return res.redirect(arguments[0], `${httpMode}://${domainResult.domain}${arguments[1]}`);
-                }
-
-            };
-
-            // Next
-            next();
-
-        }
+        if (domainResult.verified && !domainResult.isStaticPath) { next(); }
 
         // Nope
         else { tinyCfg.invalidDomainCallback(req, res, next); }
