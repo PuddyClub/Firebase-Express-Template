@@ -18,7 +18,7 @@ module.exports = function (data) {
     }
 
     // Nope
-    else if (data.cookieSession) { cookieSession = data.cookieSession; }
+    else if (data.cookieSession) { cookieSession = data.cookieSession; app.use(cookieSession); }
 
     // CSRF Token
     if (data.csrftoken) { require('./files/csrftoken').apply({ app: app }, data.csrftoken.module); }
