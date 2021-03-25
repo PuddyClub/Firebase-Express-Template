@@ -21,7 +21,7 @@ module.exports = function (data) {
     else if (data.cookieSession) { cookieSession = data.cookieSession; }
 
     // CSRF Token
-    require('./files/csrftoken').apply({ app: app }, data.csrftoken.module);
+    if (data.csrftoken) { require('./files/csrftoken').apply({ app: app }, data.csrftoken.module); }
 
     // Discord OAuth2
     let dsSession;
