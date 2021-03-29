@@ -211,6 +211,22 @@ const app = expressTemplate({
 
         },
 
+        // Get CSRF Token
+        getCsrfToken: function (req, res) {
+            return new Promise(function (resolve) {
+
+                // Return csrfToken
+                resolve({
+                    now: '', // CSRF Token sent by the user
+                    server: '' // Server CSRF Token
+                });
+
+                // Complete
+                return;
+
+            });
+        },
+
         // URLs of the module.
         urls: {
             setLang: '/setLang'
