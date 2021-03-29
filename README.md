@@ -211,6 +211,14 @@ const app = expressTemplate({
 
         },
 
+        // Return true or false if your web session is a logged user.
+        getIsUser: function(req, res) {
+
+            // Set the user session boolean to false
+            return false;
+
+        },
+
         // Get CSRF Token
         getCsrfToken: function (req, res) {
             return new Promise(function (resolve) {
