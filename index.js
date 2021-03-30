@@ -69,13 +69,21 @@ module.exports = function (data) {
         // Firebase Auth
         firebaseOAuth: function () {
             const result = firebaseOAuth.apply(firebaseOAuth, arguments);
-            return function (req, res, next) { return result(req, res, i18.insertIsUser(req, res, next)); };
+            return function (req, res, next) {
+                return result(req, res, function () {
+                    return i18.insertIsUser(req, res, next);
+                });
+            };
         },
 
         // Discord Session
         dsSession: function () {
             const result = dsSession.apply(dsSession, arguments);
-            return function (req, res, next) { return result(req, res, i18.insertIsUser(req, res, next)); };
+            return function (req, res, next) {
+                return result(req, res, function () {
+                    return i18.insertIsUser(req, res, next);
+                });
+            };
         },
 
         // FN
