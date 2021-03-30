@@ -44,7 +44,7 @@ module.exports = function (data) {
     // i18
     let i18;
     if (data.i18) {
-        data.i18.getCsrfToken = data.csrftoken.callback;
+        if (data.csrftoken) { data.i18.getCsrfToken = data.csrftoken.callback; }
         i18 = require('./files/i18')(app, data.i18);
     }
 
@@ -62,11 +62,36 @@ module.exports = function (data) {
 
     // Start Middleware
     data.middleware({
-        cookieSession: cookieSession, app: app, firebaseWeb: data.firebaseWeb, firebaseOAuth: firebaseOAuth, dsSession: dsSession, cfg: data.cfg, fn: function () {
+
+        // Other Things
+        i18: i18, cookieSession: cookieSession, app: app, firebaseWeb: data.firebaseWeb, cfg: data.cfg,
+
+        // Firebase Auth
+        firebaseOAuth: function () {
+
+            // Complete
+            const result = firebaseOAuth.apply(firebaseOAuth, arguments);
+            i18.insertIsUser();
+            return result;
+
+        },
+
+        // Discord Session
+        dsSession: function () {
+
+            // Complete
+            const result = dsSession.apply(dsSession, arguments);
+            i18.insertIsUser();
+            return result;
+
+        },
+
+        // FN
+        fn: function () {
 
             // Start
             if (data.timezone) { timezone.start(); }
-            if (data.i18) { i18.start(); }
+            if (data.i18) { i18.app.start(); }
 
             // Insert Error Pages
             if (typeof data.errorPage === "function") {
@@ -79,6 +104,7 @@ module.exports = function (data) {
             return;
 
         }
+
     });
 
     // Express Module
