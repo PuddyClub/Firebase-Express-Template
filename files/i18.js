@@ -5,13 +5,13 @@ module.exports = function (app, data) {
     const i18 = { app: new tinyModule(app, data) };
     i18.isUser = i18.app.insert(data.getIsUser);
     i18.isUserStarted = false;
-    i18.insertIsUser = function () {
+    i18.insertIsUser = function (req, res, next) {
 
         // Install
         if (!i18.isUserStarted) { i18.isUserStarted = true; }
 
         // Return
-        return i18.isUser;
+        return i18.isUser(req, res, next);
 
     };
 
