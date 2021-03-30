@@ -8,13 +8,10 @@ module.exports = function (app, data) {
     i18.insertIsUser = function () {
 
         // Install
-        if (!i18.isUserStarted) {
-            i18.isUserStarted = true;
-            app.use(i18.isUser);
-        }
+        if (!i18.isUserStarted) { i18.isUserStarted = true; }
 
-        // Complete
-        return;
+        // Return
+        return i18.isUser;
 
     };
 
