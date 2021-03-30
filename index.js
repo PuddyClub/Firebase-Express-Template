@@ -67,15 +67,15 @@ module.exports = function (data) {
         i18: i18, cookieSession: cookieSession, app: app, firebaseWeb: data.firebaseWeb, cfg: data.cfg,
 
         // Firebase Auth
-        firebaseOAuth: function (req, res) {
-            const tinyArgs = arguments;
-            return i18.insertIsUser(req, res, function () { return firebaseOAuth.apply(firebaseOAuth, tinyArgs); });
+        firebaseOAuth: function () {
+            const result = firebaseOAuth.apply(firebaseOAuth, arguments);
+            return function (req, res, next) { return result(req, res, i18.insertIsUser(req, res, next)); };
         },
 
         // Discord Session
-        dsSession: function (req, res) {
-            const tinyArgs = arguments;
-            return i18.insertIsUser(req, res, function () { return dsSession.apply(dsSession, tinyArgs); });
+        dsSession: function () {
+            const result = dsSession.apply(dsSession, arguments);
+            return function (req, res, next) { return result(req, res, i18.insertIsUser(req, res, next)); };
         },
 
         // FN
