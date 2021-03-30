@@ -3,7 +3,7 @@ module.exports = function (app, data) {
     // Module
     const tinyModule = require('@tinypudding/i18');
     const i18 = { app: new tinyModule(app, data) };
-    i18.isUser = i18.insert(data.getIsUser);
+    i18.isUser = i18.app.insert(data.getIsUser);
     i18.isUserStarted = false;
     i18.insertIsUser = function () {
 
