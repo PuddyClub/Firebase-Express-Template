@@ -36,9 +36,8 @@ module.exports = function (data) {
     }
 
     // Firebase Auth
-    let firebaseOAuth;
     if (data.firebaseOAuth) {
-        firebaseOAuth = require('./files/firebase-auth')(app, data.fileCfg, firebase, data.vars);
+        require('./files/firebase-auth')(app, data.fileCfg, firebase, data.vars);
     }
 
     // i18
@@ -65,16 +64,6 @@ module.exports = function (data) {
 
         // Other Things
         i18: i18, cookieSession: cookieSession, app: app, firebaseWeb: data.firebaseWeb, cfg: data.cfg,
-
-        // Firebase Auth
-        firebaseOAuth: function () {
-            const result = firebaseOAuth.apply(firebaseOAuth, arguments);
-            return function (req, res, next) {
-                return result(req, res, function () {
-                    return i18.insertIsUser(req, res, next);
-                });
-            };
-        },
 
         // Discord Session
         dsSession: function () {
