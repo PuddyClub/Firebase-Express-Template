@@ -63,7 +63,7 @@ module.exports = function (data) {
     data.middleware({
 
         // Other Things
-        i18: i18, cookieSession: cookieSession, app: app, firebaseWeb: data.firebaseWeb, cfg: data.cfg,
+        firebase: firebase, i18: i18, cookieSession: cookieSession, app: app, firebaseWeb: data.firebaseWeb, cfg: data.cfg,
 
         // Discord Session
         dsSession: function () {
