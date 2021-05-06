@@ -70,7 +70,7 @@ module.exports = function (data) {
             const result = dsSession.apply(dsSession, arguments);
             return function (req, res, next) {
                 return result(req, res, function () {
-                    return i18.insertIsUser(req, res, next);
+                    if (i18) { return i18.insertIsUser(req, res, next); } else { next(); }
                 });
             };
         },
