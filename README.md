@@ -384,3 +384,84 @@ const app = expressTemplate({
 // Website Function
 exports.example = functions.https.onRequest(app);
 ```
+
+</hr>
+
+## Firebase Google oAuth
+This script was developed specifically to work with Google's Auth of Firebase.
+
+First you need to configure your JSON data and your custom method file if you want to add anything extra to happen during the login.
+
+### JSON Data
+```json
+{
+
+    // Vars Session
+    "varsSession": {
+        "firebase_token": "firebase_token",
+        "google_token": "google_token"
+    },
+
+    // URL
+    "url": {
+        "nativeLogin": "/firebase/nativeLogin.js",
+        "nativeLogout": "/firebase/nativeLogout.js",
+        "loginServer": "/firebase/loginServer",
+        "logoutServer": "/firebase/logoutServer",
+        "fireLogin": "/fireLogin"
+    },
+
+    // Login Redirect Meta
+    "redirectMetaPages": {
+        "login": "<script src=\"/file.js\"></script>"
+    },
+
+}
+```
+
+### /file.js
+```js
+var customFirebaseLoginRedirect = {
+
+    // Before Login
+    beforeLogin: (provider, type) => {
+        return;
+    },
+
+    // Before Logout
+    beforeLogout: () => {
+        return;
+    },
+
+    // Fail Login
+    failLogout: () => {
+        return;
+    }
+
+};
+```
+
+### /index.html <meta>
+Now you need to add META to your page.
+
+```html
+<script>firebase.initializeApp(firebaseCfg);</script>
+<script src="/firebase/nativeLogout.js"></script>
+<script src="/file.js"></script>
+```
+
+### /index.html <body>
+Don't forget to add the login and logout buttons.
+
+```html
+<!-- Logout Button -->
+<a id="logout" href="javascript:void(0);">
+    Logout
+</a>
+<script>$("#logout").click(function () { tinyLogoutFirebase(); });</script>
+
+<!-- Login Button -->
+<a href="/fireLogin?redirect=homepage"> <!-- This url will redirect to /homepage -->
+    Login
+</a>
+```
