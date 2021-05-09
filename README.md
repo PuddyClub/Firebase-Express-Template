@@ -406,7 +406,7 @@ This script was developed specifically to work with Google's Auth of Firebase.
 
 First you need to configure your JSON data and your custom method file if you want to add anything extra to happen during the login.
 
-### JSON Data
+### JSON Data 
 ```json
 {
 
@@ -431,6 +431,19 @@ First you need to configure your JSON data and your custom method file if you wa
     }
 
 }
+```
+
+```js
+const app = expressTemplate({
+
+    ...
+
+    // Insert the JSON Data here
+    firebaseGoogle: JSONDATA
+
+    ...
+
+});
 ```
 
 ### /file.js
