@@ -1,60 +1,137 @@
-module.exports = function (user, csrfToken, callback) {
+// Script Base
+var tinyLoginFirebase = { auth: null, credential: null, firstTime: true };
 
-    // Final Result
-    const final_redirect = function (err, data) {
+// Redirect Final
+const finalRedirect = function () {
 
-        // Callback
-        if (typeof callback === "function") { callback(err, data); }
+    // Final Redirect
+    let redirect = '/';
+    let urlQuery = queryUrlByName('redirect', location.href);
+    if (typeof urlQuery === "string") {
 
-        // Complete
-        return;
+        // Fix URL
+        if (urlQuery.startsWith('/')) { urlQuery = urlQuery.substring(1); }
 
-    };
+        // Add Redirect
+        redirect += urlQuery;
 
-    // User Exist
-    if (user) {
-        user.getIdToken().then(function (idToken) {
+    }
 
-            // Fetch
-            fetch('/tinyPuddyFirebase/loginServer', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ token: idToken, csrfToken: csrfToken })
-            }).then(response => {
-                response.json().then((data) => {
+    // Redirect
+    location.href = redirect;
 
-                    // Show Error Message
-                    if (!data.success) {
-                        final_redirect(new Error(data.error));
-                    }
+};
 
-                    // Complete
-                    else {
-                        final_redirect(null, user);
-                    }
+// Auth
+var loginServerURL;
+tinyLoginFirebase.auth = firebase.auth();
 
-                    // Return
-                    return;
+// Auth Redirect
+tinyLoginFirebase.auth.getRedirectResult().then(async (result) => {
+
+    // Get User
+    if (result && result.user) {
+
+        // Get Credential  
+        tinyLoginFirebase.credential = result.credential;
+
+    }
+
+    // Complete
+    return;
+
+}).catch((error) => {
+    console.error(error);
+    alert(error.message);
+});
+
+// Prepare Auth State Change
+const firebaseOnAuthStateChanged = async function (user) {
+
+    // First Time
+    if (tinyLoginFirebase.firstTime) {
+
+        // No User
+        if (!user) {
+
+            // Disable First Time
+            tinyLoginFirebase.firstTime = false;
+
+            // Create Provider
+            const provider = new firebase.auth.GoogleAuthProvider();
+
+            // Exist Callback
+            if (customFirebaseLoginRedirect && typeof customFirebaseLoginRedirect.beforeLogin === "function") { await customFirebaseLoginRedirect.beforeLogin(provider, 'login'); }
+
+            // Sign In With Popup
+            tinyLoginFirebase.auth.signInWithRedirect(provider);
+
+        }
+
+        // Credential Check
+        else {
+
+            // Exist Credential
+            if (customFirebaseLoginRedirect && typeof customFirebaseLoginRedirect.beforeLogin === "function") { await customFirebaseLoginRedirect.beforeLogin(null, 'getRedirectResult'); }
+            if (user && tinyLoginFirebase.credential) {
+
+                // Disable First Time
+                tinyLoginFirebase.firstTime = false;
+
+                user.getIdToken().then(function (idToken) {
+
+                    // Fetch
+                    fetch(loginServerURL, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            token: idToken,
+                            csrfToken: csrfToken,
+                            google_token: tinyLoginFirebase.credential.accessToken
+                        })
+                    }).then(response => {
+                        response.json().then((data) => {
+
+                            // Show Error Message
+                            if (!data.success) {
+                                tinyLogoutFirebase(new Error(data.error), finalRedirect);
+                            }
+
+                            // Complete
+                            else { finalRedirect(); }
+
+                            // Return
+                            return;
+
+                        }).catch(err => {
+                            tinyLogoutFirebase(err, finalRedirect);
+                            return;
+                        });
+                    }).catch(err => {
+                        tinyLogoutFirebase(err, finalRedirect);
+                        return;
+                    });
 
                 }).catch(err => {
-                    final_redirect(err);
+                    tinyLogoutFirebase(err, finalRedirect);
                     return;
                 });
-            }).catch(err => {
-                final_redirect(err);
-                return;
-            });
+            }
 
-        }).catch(err => {
-            final_redirect(err);
-            return;
-        });
+            // Nope. Try Again
+            else { setTimeout(() => { firebaseOnAuthStateChanged(user); }, 100); }
+
+        }
+
     }
 
     // Complete
     return;
 
 };
+
+// Prepare Redirect
+tinyLoginFirebase.auth.onAuthStateChanged(firebaseOnAuthStateChanged);
