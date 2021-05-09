@@ -1,6 +1,11 @@
 // Insert User Firebase Token
 var loginServerURL;
 var updateFirebaseUserToken = function (user, callback = () => { location.reload(); }) {
+
+    // Error Result
+    const finalRedirect = (success) => { return callback(new Error('Fail Logout'), { success: success }); };
+
+    // Get Token
     user.getIdToken().then(function (idToken) {
 
         // Fetch
@@ -21,7 +26,7 @@ var updateFirebaseUserToken = function (user, callback = () => { location.reload
                 // Show Error Message
                 if (!data.success) {
                     tinyLogoutFirebase(new Error(data.error), finalRedirect);
-                } else { callback(data); }
+                } else { callback(null, data); }
 
                 // Return
                 return;
