@@ -184,7 +184,7 @@ const app = expressTemplate({
             if(req.body && typeof req.body.csrftoken === "string") { result.now = req.body.csrftoken; }
 
             // Get Server
-            if(req.csrftoken && req.csrftoken.now && typeof req.csrftoken.now.value === "string") { result.server = req.csrftoken.now.value; }
+            if(req.csrfToken && req.csrfToken.now && typeof req.csrfToken.now.value === "string") { result.server = req.csrfToken.now.value; }
 
             // Send Reuslt
             return result; 
