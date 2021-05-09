@@ -427,7 +427,9 @@ First you need to configure your JSON data and your custom method file if you wa
 
     // Login Redirect Meta
     "redirectMetaPages": {
-        "login": "<script src=\"/file.js\"></script>"
+        "login": "<script src=\"/file.js\"></script>",
+        "loginTitle": "Login...",
+        "firebaseVersion": "8.2.6"
     }
 
 }
