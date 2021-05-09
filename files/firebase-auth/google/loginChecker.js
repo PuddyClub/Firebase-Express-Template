@@ -17,8 +17,7 @@ var updateFirebaseUserToken = function (user, callback = () => { location.reload
             },
             body: JSON.stringify({
                 token: idToken,
-                csrfToken: csrfToken,
-                google_token: tinyLoginFirebase.credential.accessToken
+                csrfToken: csrfToken
             })
         }).then(response => {
             response.json().then((data) => {

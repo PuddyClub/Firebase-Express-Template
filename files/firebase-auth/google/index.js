@@ -104,8 +104,8 @@ module.exports = function (firebaseGoogle, app, firebase, firebaseWeb, csrftoken
                 if (csrfTokenCheck(req, res)) { return; }
 
                 // Complete
-                req.session[tinyCfg.firebase_token] = req.body.token;
-                req.session[tinyCfg.google_token] = req.body.google_token;
+                if (typeof req.body.token === "string" || typeof req.body.token === "number") { req.session[tinyCfg.firebase_token] = req.body.token; }
+                if (typeof req.body.google_token === "string" || typeof req.body.google_token === "number") { req.session[tinyCfg.google_token] = req.body.google_token; }
                 res.json({ success: true });
                 return;
 
