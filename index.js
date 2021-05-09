@@ -35,11 +35,6 @@ module.exports = function (data) {
 
     }
 
-    // Firebase Auth
-    if (data.firebaseOAuth) {
-        require('./files/firebase-auth/google')(app, data.fileCfg, firebase, data.vars);
-    }
-
     // i18
     let i18;
     if (data.i18) {
@@ -61,15 +56,15 @@ module.exports = function (data) {
 
     // Firebase Google
     let firebaseGoogle;
-    if(data.firebaseGoogle) {
+    if (data.firebaseGoogle) {
         firebaseGoogle = require('./files/firebase-auth/google')(data.firebaseGoogle, app, firebase, data.firebaseWeb, data.csrftoken.callback);
-    }
+    } else { firebaseGoogle = {}; }
 
     // Start Middleware
     data.middleware({
 
         // Other Things
-        firebase: firebase, i18: i18, cookieSession: cookieSession, app: app, firebaseWeb: data.firebaseWeb, cfg: data.cfg,
+        googleFireAuth: firebaseGoogle.appUse, firebase: firebase, i18: i18, cookieSession: cookieSession, app: app, firebaseWeb: data.firebaseWeb, cfg: data.cfg,
 
         // Discord Session
         dsSession: function () {
@@ -87,6 +82,7 @@ module.exports = function (data) {
             // Start
             if (data.timezone) { timezone.start(); }
             if (data.i18) { i18.app.start(); }
+            if (firebaseGoogle) { firebaseGoogle.startFirebase(); }
 
             // Insert Error Pages
             if (typeof data.errorPage === "function") {
