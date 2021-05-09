@@ -34,9 +34,8 @@ module.exports = function (firebaseGoogle, app, firebase, firebaseWeb, csrftoken
     if (typeof fileCfg.fileMaxAge === "string") { fileCfg.fileMaxAge = Number(fileCfg.fileMaxAge); }
     if (typeof fileCfg.fileMaxAge === "number") { fileCfg.fileMaxAge = fileCfg.fileMaxAge / 1000; }
 
-
-    // Return
-    return {
+    // Result
+    const resultItem = {
 
         // Start Firebase
         startFirebase: function () {
@@ -85,7 +84,7 @@ module.exports = function (firebaseGoogle, app, firebase, firebaseWeb, csrftoken
                 );
             });
 
-            app.post(tinyURLs.loginServer, function (req, res) {
+            app.post(tinyURLs.loginServer, resultItem.appUse, function (req, res) {
 
                 // Check Code
                 const csrfTokenCheck = require('@tinypudding/puddy-lib/http/csrfTokenAnalyze');
@@ -99,10 +98,7 @@ module.exports = function (firebaseGoogle, app, firebase, firebaseWeb, csrftoken
 
             });
 
-            app.post(tinyURLs.logoutServer, function (req, res) {
-
-                // Check Code
-                console.log(req.firebase_session);
+            app.post(tinyURLs.logoutServer, resultItem.appUse, function (req, res) {
 
                 // Check Code
                 const csrfTokenCheck = require('@tinypudding/puddy-lib/http/csrfTokenAnalyze');
@@ -203,4 +199,7 @@ module.exports = function (firebaseGoogle, app, firebase, firebaseWeb, csrftoken
         }
 
     };
+
+    // Return
+    return resultItem;
 };
