@@ -458,7 +458,7 @@ var customFirebaseLoginRedirect = {
 };
 ```
 
-### /index.html <meta>
+### /index.html (meta)
 Now you need to add META to your page.
 
 ```html
@@ -467,7 +467,7 @@ Now you need to add META to your page.
 <script src="/file.js"></script>
 ```
 
-### /index.html <body>
+### /index.html (body)
 Don't forget to add the login and logout buttons.
 
 ```html
