@@ -119,6 +119,14 @@ const app = expressTemplate({
 
         // Homepage (web.dsSession will install the Discord Session in this page)
         web.app.get('/', web.dsSession(), (req, res) => {
+            console.log(req.discord_session);
+            res.render('test');
+            return;
+        });
+
+        // Install Firebase Google oAuth in this page
+        web.app.get('/firebasePage', web.googleFireAuth, (req, res) => {
+            console.log(req.firebase_session);
             res.render('test');
             return;
         });
