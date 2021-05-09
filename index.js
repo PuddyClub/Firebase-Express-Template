@@ -60,8 +60,9 @@ module.exports = function (data) {
     }
 
     // Firebase Google
+    let firebaseGoogle;
     if(data.firebaseGoogle) {
-
+        firebaseGoogle = require('./files/firebase-auth/google')(data.firebaseGoogle, app, firebase, data.firebaseWeb, data.csrftoken.callback);
     }
 
     // Start Middleware

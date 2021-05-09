@@ -1,16 +1,16 @@
-module.exports = function (app, filePrepareCfg, firebase, vars, urls, redirectMetaPages, firebaseWeb, csrftokenCallback) {
+module.exports = function (firebaseGoogle, app, firebase, firebaseWeb, csrftokenCallback) {
     
     // Prepare Modules
     const _ = require('lodash');
 
     // Load Vars
-    const tinyCfg = _.defaultsDeep({}, vars, {
+    const tinyCfg = _.defaultsDeep({}, firebaseGoogle.varsSession, {
         firebase_token: 'firebase_token',
         google_token: 'google_token'
     });
 
     // Load URLs
-    const tinyURLs = _.defaultsDeep({}, urls, {
+    const tinyURLs = _.defaultsDeep({}, firebaseGoogle.url, {
         nativeLogin: '/firebase/nativeLogin.js',
         nativeLogout: '/firebase/nativeLogout.js',
         loginServer: '/firebase/loginServer',
@@ -19,14 +19,14 @@ module.exports = function (app, filePrepareCfg, firebase, vars, urls, redirectMe
     });
 
     // Tiny Redirect
-    const metaPageRedirect = _.defaultsDeep({}, redirectMetaPages, {
+    const metaPageRedirect = _.defaultsDeep({}, firebaseGoogle.redirectMetaPages, {
         login: '',
         firebaseVersion: '8.2.6',
         loginTitle: 'Login...'
     });
 
     // File Config
-    const fileCfg = _.defaultsDeep({}, filePrepareCfg, {
+    const fileCfg = _.defaultsDeep({}, firebaseGoogle.cfg, {
         fileMaxAge: '2592000000'
     });
 
