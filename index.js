@@ -37,7 +37,7 @@ module.exports = function (data) {
 
     // Firebase Auth
     if (data.firebaseOAuth) {
-        require('./files/firebase-auth')(app, data.fileCfg, firebase, data.vars);
+        require('./files/firebase-auth/google')(app, data.fileCfg, firebase, data.vars);
     }
 
     // i18
@@ -56,6 +56,11 @@ module.exports = function (data) {
 
         // Start Timezone
         timezone = require('./files/timezone')(app, data.timezone, data.csrftoken.callback);
+
+    }
+
+    // Firebase Google
+    if(data.firebaseGoogle) {
 
     }
 
