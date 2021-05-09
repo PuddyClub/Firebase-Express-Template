@@ -492,6 +492,31 @@ Now you need to add META to your page.
 <script src="/file.js"></script>
 ```
 
+The file "nativeLoginClient.js" contains the method "updateFirebaseUserToken();".
+You can use this method to validate that your server token is valid. 
+You can choose a custom method to run after the new token is updated.
+The default is made to reload the page.
+
+```js
+var user_token_validated_in_the_server_side = false;
+firebase.auth().onAuthStateChanged(function (user) {
+
+    // The Value is False. The new token will be added now.
+    if(user && !user_token_validated_in_the_server_side) {
+        updateFirebaseUserToken(user, (json) => {
+
+            // Show Request Result
+            console.log(json); 
+            
+            // Reload the page
+            location.reload(); 
+            
+        });
+    }
+
+});
+```
+
 ### /index.html (body)
 Don't forget to add the login and logout buttons.
 

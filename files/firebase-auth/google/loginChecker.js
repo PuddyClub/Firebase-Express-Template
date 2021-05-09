@@ -1,6 +1,6 @@
 // Insert User Firebase Token
 var loginServerURL;
-var updateFirebaseUserToken = function (user) {
+var updateFirebaseUserToken = function (user, callback = () => { location.reload(); }) {
     user.getIdToken().then(function (idToken) {
 
         // Fetch
@@ -21,7 +21,7 @@ var updateFirebaseUserToken = function (user) {
                 // Show Error Message
                 if (!data.success) {
                     tinyLogoutFirebase(new Error(data.error), finalRedirect);
-                }
+                } else { callback(data); }
 
                 // Return
                 return;
