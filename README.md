@@ -424,7 +424,10 @@ First you need to configure your JSON data and your custom method file if you wa
 var customFirebaseLoginRedirect = {
 
     // Before Login
-    beforeLogin: (provider, type) => {
+    beforeLogin: (provider, type, extra) => {
+        // provider - firebase.auth.GoogleAuthProvider() value
+        // type - event type 
+        // extra - some extra value
         return;
     },
 
