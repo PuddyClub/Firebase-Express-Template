@@ -427,6 +427,7 @@ First you need to configure your JSON data and your custom method file if you wa
     // URL
     "url": {
         "nativeLogin": "/firebase/nativeLogin.js",
+        "nativeLoginClient": "/firebase/nativeLoginClient.js",
         "nativeLogout": "/firebase/nativeLogout.js",
         "loginServer": "/firebase/loginServer",
         "logoutServer": "/firebase/logoutServer",
@@ -486,6 +487,7 @@ Now you need to add META to your page.
 
 ```html
 <script>firebase.initializeApp(firebaseCfg);</script>
+<script src="/firebase/nativeLoginClient.js"></script>
 <script src="/firebase/nativeLogout.js"></script>
 <script src="/file.js"></script>
 ```

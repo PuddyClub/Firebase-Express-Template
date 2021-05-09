@@ -12,6 +12,7 @@ module.exports = function (firebaseGoogle, app, firebase, firebaseWeb, csrftoken
     // Load URLs
     const tinyURLs = _.defaultsDeep({}, firebaseGoogle.url, {
         nativeLogin: '/firebase/nativeLogin.js',
+        nativeLoginClient: '/firebase/nativeLoginClient.js',
         nativeLogout: '/firebase/nativeLogout.js',
         loginServer: '/firebase/loginServer',
         logoutServer: '/firebase/logoutServer',
@@ -55,6 +56,18 @@ module.exports = function (firebaseGoogle, app, firebase, firebaseWeb, csrftoken
                 return readFile(
                     res, next, {
                     file: fs.readFileSync(path.join(__dirname, './login.js'), 'utf8')
+                        .replace('var loginServerURL;', 'var loginServerURL = "' + tinyURLs.loginServer + '";'),
+                    date: { year: 2021, month: 2, day: 11, hour: 11, minute: 17 },
+                    timezone: 'America/Sao_Paulo',
+                    fileMaxAge: fileCfg.fileMaxAge
+                }
+                );
+            });
+
+            app.get(tinyURLs.nativeLoginClient, function (req, res, next) {
+                return readFile(
+                    res, next, {
+                    file: fs.readFileSync(path.join(__dirname, './loginChecker.js'), 'utf8')
                         .replace('var loginServerURL;', 'var loginServerURL = "' + tinyURLs.loginServer + '";'),
                     date: { year: 2021, month: 2, day: 11, hour: 11, minute: 17 },
                     timezone: 'America/Sao_Paulo',
