@@ -107,7 +107,7 @@ const app = expressTemplate({
     // Website Middleware
     middleware: function (web) {
      
-         // Nunjucks Module. You can use any module here.
+        // Nunjucks Module. You can use any module here.
         const path = require('path');
         const nunjucks = require('nunjucks');
         nunjucks.configure(path.join(__dirname, '../views'), {
