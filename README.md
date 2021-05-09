@@ -181,7 +181,7 @@ const app = expressTemplate({
             const result = { now: null, server: null };
 
             // Get Body
-            if(req.body && req.body && typeof req.body.csrftoken === "string") { result.now = req.body.csrftoken; }
+            if(req.body && typeof req.body.csrftoken === "string") { result.now = req.body.csrftoken; }
 
             // Get Server
             if(req.csrftoken && req.csrftoken.now && typeof req.csrftoken.now.value === "string") { result.server = req.csrftoken.now.value; }
