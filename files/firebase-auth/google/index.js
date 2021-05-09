@@ -1,5 +1,5 @@
 module.exports = function (firebaseGoogle, app, firebase, firebaseWeb, csrftokenCallback) {
-    
+
     // Prepare Modules
     const _ = require('lodash');
 
@@ -165,45 +165,37 @@ module.exports = function (firebaseGoogle, app, firebase, firebaseWeb, csrftoken
         },
 
         // App Use
-        appUse: function () {
+        appUse: (req, res, next) => {
 
-            // Prepare Base
-            app.use((req, res, next) => {
+            // Prepare Auth
+            if (typeof req.session[tinyCfg.firebase_token] === "string") {
+                firebase.auth.verifyIdToken(req.session[tinyCfg.firebase_token])
 
-                // Prepare Auth
-                if (typeof req.session[tinyCfg.firebase_token] === "string") {
-                    firebase.auth.verifyIdToken(req.session[tinyCfg.firebase_token])
+                    // Complete
+                    .then((decodedToken) => {
+
+                        // Add Firebase Session
+                        req.firebase_session = decodedToken;
 
                         // Complete
-                        .then((decodedToken) => {
+                        next();
+                        return;
 
-                            // Add Firebase Session
-                            req.firebase_session = decodedToken;
+                    }).catch((err) => {
 
-                            // Complete
-                            next();
-                            return;
+                        // Delete Token
+                        delete req.session[tinyCfg.firebase_token];
 
-                        }).catch((err) => {
+                        // Complete
+                        next();
+                        return;
 
-                            // Delete Token
-                            delete req.session[tinyCfg.firebase_token];
+                    });
 
-                            // Complete
-                            next();
-                            return;
+            }
 
-                        });
-
-                }
-
-                // Nope
-                else { next(); }
-
-                // Complete
-                return;
-
-            });
+            // Nope
+            else { next(); }
 
             // Complete
             return;
