@@ -175,7 +175,21 @@ const app = expressTemplate({
         module: ['csrfToken', 1, 'hours'],
 
         // The Callback of the Csrf Token validator for all other modules of the template.
-        callback: function (req) { return { now: req.body.csrftoken, server: req.csrftoken.now.value }; }
+        callback: function (req) {
+        
+            // Prepare Result
+            const result = { now: null, server: null };
+
+            // Get Body
+            if(req.body && req.body && typeof req.body.csrftoken === "string") { result.now = req.body.csrftoken; }
+
+            // Get Server
+            if(req.csrftoken && req.csrftoken.now && typeof req.csrftoken.now.value === "string") { result.server = req.csrftoken.now.value; }
+
+            // Send Reuslt
+            return result; 
+        
+        }
 
     },
 
