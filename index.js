@@ -82,7 +82,7 @@ module.exports = function (data) {
             // Start
             if (data.timezone) { timezone.start(); }
             if (data.i18) { i18.app.start(); }
-            if (firebaseGoogle) { firebaseGoogle.startFirebase(); }
+            if (data.firebaseGoogle) { firebaseGoogle.startFirebase(); }
 
             // Insert Error Pages
             if (typeof data.errorPage === "function") {
