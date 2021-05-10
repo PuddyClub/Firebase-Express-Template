@@ -328,6 +328,30 @@ const app = expressTemplate({
             // Crypto Key
             crypto: { key: 'tinypudding123456789012345678900' },
 
+            // Check Auth Time
+            checkAuthTime: (decodedIdToken) => {
+
+                // Only process if the user just signed in in the last 5 minutes.
+                if (new Date().getTime() / 1000 - decodedIdToken.auth_time < 5 * 60) {
+                    return true;
+                }
+
+                // Nope
+                else { return false; }
+
+            },
+
+            // Cookie Time Generator
+            cookieTimeGenerator: (decodedIdToken) => {
+
+                // Set session expiration to 5 days.
+                const expiresIn = 60 * 60 * 24 * 5 * 1000;
+
+                // Complete
+                return expiresIn;
+
+            },
+
             // Configuration
             cfg: {
 
