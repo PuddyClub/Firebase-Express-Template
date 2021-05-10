@@ -200,7 +200,7 @@ module.exports = function (firebaseGoogle, app, firebase, firebaseWeb, csrftoken
 
             // Prepare Auth
             if (typeof req.session[tinyCfg.firebase_token] === "string") {
-                firebase.auth.verifyIdToken(req.session[tinyCfg.firebase_token])
+                firebase.auth.verifySessionCookie(req.session[tinyCfg.firebase_token])
 
                     // Complete
                     .then((decodedToken) => {
