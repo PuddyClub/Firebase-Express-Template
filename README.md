@@ -415,36 +415,62 @@ This script was developed specifically to work with Google's Auth of Firebase.
 First you need to configure your JSON data and your custom method file if you want to add anything extra to happen during the login.
 
 ### JSON Data 
-```json
-{
+```js
+const JSONDATA = {
 
     // Vars Session
-    "varsSession": {
-        "firebase_token": "firebase_token",
-        "google_token": "google_token"
+    varsSession: {
+        firebase_token: "firebase_token",
+        google_token: "google_token"
     },
 
     // URL
-    "url": {
-        "nativeLogin": "/firebase/nativeLogin.js",
-        "nativeLoginClient": "/firebase/nativeLoginClient.js",
-        "nativeLogout": "/firebase/nativeLogout.js",
-        "loginServer": "/firebase/loginServer",
-        "logoutServer": "/firebase/logoutServer",
-        "fireLogin": "/fireLogin"
+    url: {
+        nativeLogin: "/firebase/nativeLogin.js",
+        nativeLoginClient: "/firebase/nativeLoginClient.js",
+        nativeLogout: "/firebase/nativeLogout.js",
+        loginServer: "/firebase/loginServer",
+        logoutServer: "/firebase/logoutServer",
+        fireLogin: "/fireLogin"
     },
 
     // Login Redirect Meta
-    "redirectMetaPages": {
-        "login": "<script src=\"/file.js\"></script>",
-        "loginTitle": "Login...",
-        "firebaseVersion": "8.2.6"
+    redirectMetaPages: {
+        
+        // Basic Info
+        login: "<script src=\"/file.js\"></script>",
+        loginTitle: "Login...",
+        firebaseVersion: "8.2.6",
+
+        // Check Auth Time
+        checkAuthTime: (decodedIdToken) => {
+
+            // Only process if the user just signed in in the last 5 minutes.
+            if (new Date().getTime() / 1000 - decodedIdToken.auth_time < 5 * 60) {
+                return true;
+            }
+
+            // Nope
+            else { return false; }
+
+        },
+
+        // Cookie Time Generator
+        cookieTimeGenerator: () => {
+
+            // Set session expiration to 5 days.
+            const expiresIn = 60 * 60 * 24 * 5 * 1000;
+
+            // Complete
+            return expiresIn;
+
+        }
+        
     }
 
 }
-```
 
-```js
+// Start App
 const app = expressTemplate({
 
     ...

@@ -103,10 +103,32 @@ module.exports = function (firebaseGoogle, app, firebase, firebaseWeb, csrftoken
                 const csrfTokenCheck = require('@tinypudding/puddy-lib/http/csrfTokenAnalyze');
                 if (csrfTokenCheck(req, res)) { return; }
 
-                // Complete
-                if (typeof req.body.token === "string" || typeof req.body.token === "number") { req.session[tinyCfg.firebase_token] = req.body.token; }
+                // Insert Google Token
                 if (typeof req.body.google_token === "string" || typeof req.body.google_token === "number") { req.session[tinyCfg.google_token] = req.body.google_token; }
-                res.json({ success: true });
+
+                // Complete
+                if (typeof req.body.token === "string" || typeof req.body.token === "number") {
+
+                    // Prepare Module
+                    const cookieSession = require('@tinypudding/firebase-lib/cookieSession');
+                    const newCookie = new cookieSession();
+
+                    // Set Settings
+                    newCookie.setCookieTimeGenerator(metaPageRedirect.cookieTimeGenerator);
+                    newCookie.setCheckAuthTime(metaPageRedirect.checkAuthTime);
+                    
+                    // Action
+                    newCookie.genCookieSession(firebase.auth, req.body.token).then(sessionCookie => {
+                        req.session[tinyCfg.firebase_token] = sessionCookie;
+                        res.json({ success: true });
+                        return;
+                    }).catch(err => {
+                        res.json({ success: false, code: err.code, message: err.message }); return;
+                    });
+
+                } else { res.json({ success: true }); }
+
+                // Complete
                 return;
 
             });
