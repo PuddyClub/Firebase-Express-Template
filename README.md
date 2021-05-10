@@ -456,7 +456,7 @@ const JSONDATA = {
         },
 
         // Cookie Time Generator
-        cookieTimeGenerator: () => {
+        cookieTimeGenerator: (decodedIdToken) => {
 
             // Set session expiration to 5 days.
             const expiresIn = 60 * 60 * 24 * 5 * 1000;
