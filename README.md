@@ -527,6 +527,12 @@ var customFirebaseLoginRedirect = {
     // Fail Login
     failLogout: () => {
         return;
+    },
+
+    // Error
+    failLogout: (err, id) => {
+        alert(err.message);
+        return;
     }
 
 };
