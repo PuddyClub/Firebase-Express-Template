@@ -1,6 +1,6 @@
 {
   "name": "@tinypudding/firebase-express-template",
-  "version": "1.2.10",
+  "version": "1.2.11",
   "description": "A template for website development using Firebase.",
   "main": "index.js",
   "scripts": {
