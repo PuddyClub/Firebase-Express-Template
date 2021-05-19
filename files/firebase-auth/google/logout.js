@@ -6,7 +6,6 @@ var tinyLogoutFirebase = async function (err, callback = function (worked) { if 
 
         if (customFirebaseLoginRedirect && typeof customFirebaseLoginRedirect.failLogout === "function") { await customFirebaseLoginRedirect.failLogout(); }
         console.error(err);
-        if (customFirebaseLoginRedirect && typeof customFirebaseLoginRedirect.error === "function") { await customFirebaseLoginRedirect.error(err, 'failCallbackTimeLogout'); }
         callback(false);
         return;
 
@@ -35,6 +34,7 @@ var tinyLogoutFirebase = async function (err, callback = function (worked) { if 
                     const err = new Error(data.message);
                     err.data = data;
                     await failCallbackTime(err);
+                    if (customFirebaseLoginRedirect && typeof customFirebaseLoginRedirect.error === "function") { await customFirebaseLoginRedirect.error(err, 'fetchLogoutResponse'); }
                 }
 
                 // Complete
@@ -47,10 +47,12 @@ var tinyLogoutFirebase = async function (err, callback = function (worked) { if 
 
             }).catch(async err => {
                 await failCallbackTime(err);
+                if (customFirebaseLoginRedirect && typeof customFirebaseLoginRedirect.error === "function") { await customFirebaseLoginRedirect.error(err, 'fetchLogoutJSON'); }
                 return;
             });
         }).catch(async err => {
             await failCallbackTime(err);
+            if (customFirebaseLoginRedirect && typeof customFirebaseLoginRedirect.error === "function") { await customFirebaseLoginRedirect.error(err, 'fetchLogout'); }
             return;
         });
         return;
@@ -59,7 +61,8 @@ var tinyLogoutFirebase = async function (err, callback = function (worked) { if 
 
     // Error
     if (err) {
-        failCallbackTime(err, err.message);
+        await failCallbackTime(err);
+        if (customFirebaseLoginRedirect && typeof customFirebaseLoginRedirect.error === "function") { await customFirebaseLoginRedirect.error(err, 'logoutError'); }
     }
 
     // Sign Out
@@ -70,8 +73,9 @@ var tinyLogoutFirebase = async function (err, callback = function (worked) { if 
             logoutAction();
             return;
         })
-        .catch((err) => {
-            failCallbackTime(err, err.message);
+        .catch(async (err) => {
+            await failCallbackTime(err);
+            if (customFirebaseLoginRedirect && typeof customFirebaseLoginRedirect.error === "function") { await customFirebaseLoginRedirect.error(err, 'firebaseLogout'); }
             return;
         });
 
