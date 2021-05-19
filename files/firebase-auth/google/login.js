@@ -40,9 +40,10 @@ tinyLoginFirebase.auth.getRedirectResult().then(async (result) => {
     // Complete
     return;
 
-}).catch((error) => {
+}).catch(async (error) => {
     console.error(error);
-    alert(error.message);
+    if (customFirebaseLoginRedirect && typeof customFirebaseLoginRedirect.error === "function") { await customFirebaseLoginRedirect.error(error, 'getRedirectResult'); }
+    return;
 });
 
 // Prepare Auth State Change

@@ -2,12 +2,13 @@ var tinyLogoutFirebase = async function (err, callback = function (worked) { if 
 
     // Callback
     if (customFirebaseLoginRedirect && typeof customFirebaseLoginRedirect.beforeLogout === "function") { await customFirebaseLoginRedirect.beforeLogout(); }
-    const failCallbackTime = function (err, errMessage) {
+    const failCallbackTime = async function (err) {
 
-        if (customFirebaseLoginRedirect && typeof customFirebaseLoginRedirect.failLogout === "function") { customFirebaseLoginRedirect.failLogout(); }
+        if (customFirebaseLoginRedirect && typeof customFirebaseLoginRedirect.failLogout === "function") { await customFirebaseLoginRedirect.failLogout(); }
         console.error(err);
-        alert(errMessage);
+        if (customFirebaseLoginRedirect && typeof customFirebaseLoginRedirect.error === "function") { await customFirebaseLoginRedirect.error(err, 'failCallbackTimeLogout'); }
         callback(false);
+        return;
 
     };
 
@@ -27,11 +28,13 @@ var tinyLogoutFirebase = async function (err, callback = function (worked) { if 
                 revokeAll: false
             })
         }).then(async response => {
-            response.json().then((data) => {
+            response.json().then(async (data) => {
 
                 // Show Error Message
                 if (!data.success) {
-                    failCallbackTime(data, data.message);
+                    const err = new Error(data.message);
+                    err.data = data;
+                    await failCallbackTime(err);
                 }
 
                 // Complete
@@ -42,12 +45,12 @@ var tinyLogoutFirebase = async function (err, callback = function (worked) { if 
                 // Return
                 return;
 
-            }).catch(err => {
-                failCallbackTime(err, err.message);
+            }).catch(async err => {
+                await failCallbackTime(err);
                 return;
             });
-        }).catch(err => {
-            failCallbackTime(err, err.message);
+        }).catch(async err => {
+            await failCallbackTime(err);
             return;
         });
         return;
