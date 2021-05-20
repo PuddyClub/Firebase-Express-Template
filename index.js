@@ -21,7 +21,7 @@ module.exports = function (data) {
     else if (data.cookieSession) { cookieSession = data.cookieSession; app.use(cookieSession); }
 
     // CSRF Token
-    if (data.csrftoken) { require('./files/csrftoken').apply({ app: app }, data.csrftoken.module); }
+    if (data.csrftoken) { require('./files/csrftoken').apply({ app: app }, data.csrftoken.module); } else { data.csrftoken = {}; }
 
     // Discord OAuth2
     let dsSession;
@@ -38,7 +38,7 @@ module.exports = function (data) {
     // i18
     let i18;
     if (data.i18) {
-        if (data.csrftoken) { data.i18.getCsrfToken = data.csrftoken.callback; }
+        if (typeof data.csrftoken.callback === "function") { data.i18.getCsrfToken = data.csrftoken.callback; }
         i18 = require('./files/i18')(app, data.i18);
     }
 
@@ -64,13 +64,14 @@ module.exports = function (data) {
     data.middleware({
 
         // Other Things
-        googleFireAuth: firebaseGoogle.appUse, 
-        firebase: firebase, 
-        i18: i18, 
-        cookieSession: cookieSession, 
-        app: app, 
-        firebaseWeb: data.firebaseWeb, 
+        googleFireAuth: firebaseGoogle.appUse,
+        firebase: firebase,
+        i18: i18,
+        cookieSession: cookieSession,
+        app: app,
+        firebaseWeb: data.firebaseWeb,
         cfg: data.cfg,
+        csrftokenCallback: data.csrftoken.callback,
 
         // Discord Session
         dsSession: function () {
