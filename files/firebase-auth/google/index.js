@@ -3,6 +3,9 @@ module.exports = function (firebaseGoogle, app, firebase, firebaseWeb, csrftoken
     // Prepare Modules
     const _ = require('lodash');
 
+    // Exist Custom
+    if (typeof firebaseGoogle.custom !== "string") { firebaseGoogle.custom = ''; }
+
     // Load Vars
     const tinyCfg = _.defaultsDeep({}, firebaseGoogle.varsSession, {
         firebase_token: 'firebase_token',
@@ -83,6 +86,7 @@ module.exports = function (firebaseGoogle, app, firebase, firebaseWeb, csrftoken
                     file: fs.readFileSync(path.join(__dirname, './redirect.html'), 'utf8')
                         .replace('<meta customvalue="queryURL">', function () { return `<script>var queryUrlByName = ${require('@tinypudding/puddy-lib/get/queryUrlByName').toString()};</script>`; })
                         .replace('<meta customvalue="login">', metaPageRedirect.login)
+                        .replace('<meta customvalue="custom">', metaPageRedirect.custom)
                         .replace('<meta customvalue="title">', `<title>${metaPageRedirect.loginTitle}</title>`)
                         .replace(/\{\{firebase_version\}\}/g, metaPageRedirect.firebaseVersion)
                         .replace('<script>firebase.initializeApp();</script>', `<script>firebase.initializeApp(${JSON.stringify(firebaseWeb)});</script>`)
@@ -116,7 +120,7 @@ module.exports = function (firebaseGoogle, app, firebase, firebaseWeb, csrftoken
                     // Set Settings
                     newCookie.setCookieTimeGenerator(metaPageRedirect.cookieTimeGenerator);
                     newCookie.setCheckAuthTime(metaPageRedirect.checkAuthTime);
-                    
+
                     // Action
                     newCookie.genCookieSession(firebase.auth, req.body.token).then(sessionCookie => {
                         req.session[tinyCfg.firebase_token] = sessionCookie;
