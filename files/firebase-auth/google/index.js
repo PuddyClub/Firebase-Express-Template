@@ -4,7 +4,9 @@ module.exports = function (firebaseGoogle, app, firebase, firebaseWeb, csrftoken
     const _ = require('lodash');
 
     // Exist Custom
-    if (typeof firebaseGoogle.custom !== "string") { firebaseGoogle.custom = ''; }
+    const tinyCustom = _.defaultsDeep({}, firebaseGoogle.custom, {
+        start: ''
+    });
 
     // Load Vars
     const tinyCfg = _.defaultsDeep({}, firebaseGoogle.varsSession, {
@@ -86,7 +88,7 @@ module.exports = function (firebaseGoogle, app, firebase, firebaseWeb, csrftoken
                     file: fs.readFileSync(path.join(__dirname, './redirect.html'), 'utf8')
                         .replace('<meta customvalue="queryURL">', function () { return `<script>var queryUrlByName = ${require('@tinypudding/puddy-lib/get/queryUrlByName').toString()};</script>`; })
                         .replace('<meta customvalue="login">', metaPageRedirect.login)
-                        .replace('<meta customvalue="custom">', metaPageRedirect.custom)
+                        .replace('<meta customvalue="customStart">', tinyCustom.start)
                         .replace('<meta customvalue="title">', `<title>${metaPageRedirect.loginTitle}</title>`)
                         .replace(/\{\{firebase_version\}\}/g, metaPageRedirect.firebaseVersion)
                         .replace('<script>firebase.initializeApp();</script>', `<script>firebase.initializeApp(${JSON.stringify(firebaseWeb)});</script>`)
