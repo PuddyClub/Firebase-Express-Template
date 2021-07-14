@@ -83,24 +83,35 @@ module.exports = function (firebaseGoogle, app, firebase, firebaseWeb, csrftoken
 
             // Fire Login
             app.get(tinyURLs.fireLogin, function (req, res, next) {
-                return readFile(
-                    res, next, {
-                    file: fs.readFileSync(path.join(__dirname, './redirect.html'), 'utf8')
-                        .replace('<meta customvalue="queryURL">', function () { return `<script>var queryUrlByName = ${require('@tinypudding/puddy-lib/get/queryUrlByName').toString()};</script>`; })
-                        .replace('<meta customvalue="login">', metaPageRedirect.login)
-                        .replace('<meta customvalue="customStart">', tinyCustom.start)
-                        .replace('<meta customvalue="title">', `<title>${metaPageRedirect.loginTitle}</title>`)
-                        .replace(/\{\{firebase_version\}\}/g, metaPageRedirect.firebaseVersion)
-                        .replace('<script>firebase.initializeApp();</script>', `<script>firebase.initializeApp(${JSON.stringify(firebaseWeb)});</script>`)
-                        .replace('<meta customvalue="nativeLogin">', `<script src="${tinyURLs.nativeLogin}"></script>`)
-                        .replace('<meta customvalue="csrfToken">', `<script>var csrfToken = \`${csrftokenCallback(req).server}\`;</script>`)
-                        .replace('<meta customvalue="nativeLogout">', `<script src="${tinyURLs.nativeLogout}"></script>`),
-                    date: { year: 2021, month: 2, day: 11, hour: 11, minute: 17 },
-                    timezone: 'America/Sao_Paulo',
-                    contentType: 'text/html',
-                    fileMaxAge: fileCfg.fileMaxAge
-                }
-                );
+
+                // Prepare Callback
+                const tinyCallback = () => {
+                    return readFile(
+                        res, next, {
+                        file: fs.readFileSync(path.join(__dirname, './redirect.html'), 'utf8')
+                            .replace('<meta customvalue="queryURL">', function () { return `<script>var queryUrlByName = ${require('@tinypudding/puddy-lib/get/queryUrlByName').toString()};</script>`; })
+                            .replace('<meta customvalue="login">', metaPageRedirect.login)
+                            .replace('<meta customvalue="customStart">', tinyCustom.start)
+                            .replace('<meta customvalue="title">', `<title>${metaPageRedirect.loginTitle}</title>`)
+                            .replace(/\{\{firebase_version\}\}/g, metaPageRedirect.firebaseVersion)
+                            .replace('<script>firebase.initializeApp();</script>', `<script>firebase.initializeApp(${JSON.stringify(firebaseWeb)});</script>`)
+                            .replace('<meta customvalue="nativeLogin">', `<script src="${tinyURLs.nativeLogin}"></script>`)
+                            .replace('<meta customvalue="csrfToken">', `<script>var csrfToken = \`${csrftokenCallback(req).server}\`;</script>`)
+                            .replace('<meta customvalue="nativeLogout">', `<script src="${tinyURLs.nativeLogout}"></script>`),
+                        date: { year: 2021, month: 2, day: 11, hour: 11, minute: 17 },
+                        timezone: 'America/Sao_Paulo',
+                        contentType: 'text/html',
+                        fileMaxAge: fileCfg.fileMaxAge
+                    }
+                    );
+                };
+
+                // Start Callback
+                if (typeof tinyCustom.startCallback === "function") { tinyCustom.startCallback(req, res, tinyCallback); } else { tinyCallback(); }
+
+                // Complete
+                return;
+
             });
 
             app.post(tinyURLs.loginServer, resultItem.appUse, function (req, res) {
