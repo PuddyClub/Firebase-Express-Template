@@ -93,7 +93,7 @@ module.exports = function (firebaseGoogle, app, firebase, firebaseWeb, csrftoken
                             .replace('<meta customvalue="queryURL">', function () { return `<script>var queryUrlByName = ${require('@tinypudding/puddy-lib/get/queryUrlByName').toString()};</script>`; })
                             .replace('<meta customvalue="login">', metaPageRedirect.login)
                             .replace('<meta customvalue="customStart">', tinyCustom.start)
-                            .replace('<meta customvalue="customValue">', tinyCustom.customValue)
+                            .replace('<meta customvalue="customValue">', customValue)
                             .replace('<meta customvalue="title">', `<title>${metaPageRedirect.loginTitle}</title>`)
                             .replace(/\{\{firebase_version\}\}/g, metaPageRedirect.firebaseVersion)
                             .replace('<script>firebase.initializeApp();</script>', `<script>firebase.initializeApp(${JSON.stringify(firebaseWeb)});</script>`)
