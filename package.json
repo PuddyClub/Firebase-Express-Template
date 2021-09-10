@@ -1,33 +1,33 @@
 {
-  "name": "@tinypudding/firebase-express-template",
-  "version": "1.2.16",
-  "description": "A template for website development using Firebase.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/TinyPudding/Firebase-Express-Template.git"
-  },
-  "keywords": [
-    "express",
-    "firebase",
-    "template",
-    "http"
-  ],
-  "author": "Yasmin Seidel (JasminDreasond)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/TinyPudding/Firebase-Express-Template/issues"
-  },
-  "homepage": "https://github.com/TinyPudding/Firebase-Express-Template#readme",
-  "dependencies": {
-    "@tinypudding/puddy-lib": "^1.1.30",
-    "debug": "^4.3.1",
-    "firebase-cookie-session": "^3.0.0",
-    "for-promise": "^1.3.3",
-    "lodash": "^4.17.21",
-    "normalize-url": "^7.0.0"
-  }
+    "name": "@tinypudding/firebase-express-template",
+    "version": "1.2.17",
+    "description": "A template for website development using Firebase.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/TinyPudding/Firebase-Express-Template.git"
+    },
+    "keywords": [
+        "express",
+        "firebase",
+        "template",
+        "http"
+    ],
+    "author": "Yasmin Seidel (JasminDreasond)",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/TinyPudding/Firebase-Express-Template/issues"
+    },
+    "homepage": "https://github.com/TinyPudding/Firebase-Express-Template#readme",
+    "dependencies": {
+        "@tinypudding/puddy-lib": "^1.1.30",
+        "debug": "^4.3.1",
+        "firebase-cookie-session": "^3.0.0",
+        "for-promise": "^1.3.3",
+        "lodash": "^4.17.21",
+        "normalize-url": "^7.0.0"
+    }
 }

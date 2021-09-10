@@ -1,4 +1,4 @@
-module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
+module.exports = function(app, errorPage, vars, data, firebaseWeb, webCfg) {
 
     // Prepare Optional Module
     const optinalRequire = require('@tinypudding/puddy-lib/get/module');
@@ -7,7 +7,13 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
     const Discord = optinalRequire('discord.js');
     let djs_bot;
 
-    if (Discord) { djs_bot = new Discord.Client(); }
+    if (Discord) {
+        djs_bot = new Discord.Client({
+            intents: [
+                Discord.Intents.FLAGS.GUILDS
+            ]
+        });
+    }
 
     // Discord Redirect
     let discord_redirect = 'http://' + data.localhost + data.discord.url.redirect;
@@ -22,7 +28,7 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
     if (typeof errorPage === "function") {
         if (!data.discord) { data.discord = {}; }
         if (!data.discord.cfg) { data.discord.cfg = {}; }
-        data.discord.cfg.errorCallback = function (err, req, res) {
+        data.discord.cfg.errorCallback = function(err, req, res) {
             return errorPage(req, res, err, webCfg, firebaseWeb);
         }
     }
@@ -32,14 +38,14 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
         const authURL = require('./firebaseJSONValidator')(firebaseWeb);
         if (typeof data.discord.cfg.redirect.login === "function") {
             const loginFunction = data.discord.cfg.redirect.login;
-            data.discord.cfg.redirect.login = function (data, req, res) {
+            data.discord.cfg.redirect.login = function(data, req, res) {
                 return loginFunction(data, req, res, authURL, webCfg);
             }
         }
 
         if (typeof data.discord.cfg.redirect.logout === "function") {
             const logoutFunction = data.discord.cfg.redirect.logout;
-            data.discord.cfg.redirect.logout = function (data, req, res) {
+            data.discord.cfg.redirect.logout = function(data, req, res) {
                 return logoutFunction(data, req, res, authURL, webCfg);
             }
         }
@@ -116,7 +122,7 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
 
     // Prepare Cookie Session Template
     if (data.database) {
-        app.use(async function (req, res, next) {
+        app.use(async function(req, res, next) {
 
             // Check Path
             let allowedPath = false;
@@ -163,7 +169,7 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
             ) {
 
                 // Read Data
-                await forPromise({ data: dbCheck }, function (item, fn, fn_error) {
+                await forPromise({ data: dbCheck }, function(item, fn, fn_error) {
 
                     // Get Data
                     getDBData(dbCheck[item]).then(result => {
@@ -285,11 +291,11 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
     const discordAuthItem = require('@tinypudding/discord-oauth2/template/cookie-session')(app, discordAuthCfg);
 
     // Insert Functions
-    app.use(function (req, res, next) {
+    app.use(function(req, res, next) {
 
         // Discord JS
         if (Discord) {
-            req.discord_session.bot = function () {
+            req.discord_session.bot = function() {
 
                 // Get Discord JS
                 req.discord_session.bot = djs_bot;
@@ -312,7 +318,7 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
             req.discord_session.bot = {
 
                 // Get User
-                getUser: function (userID = '@me', version = '') {
+                getUser: function(userID = '@me', version = '') {
                     return require('@tinypudding/discord-oauth2/api/getUser')(req.discord_session.auth.app.bot_token, 'Bot', userID, version);
                 }
 
@@ -327,7 +333,7 @@ module.exports = function (app, errorPage, vars, data, firebaseWeb, webCfg) {
     });
 
     // Complete
-    return function (data = {}) {
+    return function(data = {}) {
         return (req, res, next) => {
             return discordAuthItem.sessionValidator(data)(req, res, next);
         };
