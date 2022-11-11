@@ -10,7 +10,7 @@ module.exports = function(app, errorPage, vars, data, firebaseWeb, webCfg) {
     if (Discord) {
         djs_bot = new Discord.Client({
             intents: [
-                Discord.Intents.FLAGS.GUILDS
+                Discord.GatewayIntentBits.Guilds
             ]
         });
     }
