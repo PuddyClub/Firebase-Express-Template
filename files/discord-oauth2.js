@@ -303,6 +303,7 @@ module.exports = function(app, errorPage, vars, data, firebaseWeb, webCfg) {
                 // Get Client
                 if (req.discord_session.auth && req.discord_session.auth.app && (typeof req.discord_session.auth.app.bot_token === "string" || typeof req.discord_session.auth.app.bot_token === "number")) {
                     req.discord_session.bot.token = req.discord_session.auth.app.bot_token;
+                    req.discord_session.bot.rest.setToken(req.discord_session.auth.app.bot_token);
                 }
 
                 // Module
