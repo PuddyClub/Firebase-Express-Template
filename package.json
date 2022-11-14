@@ -8,7 +8,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/TinyPudding/Firebase-Express-Template.git"
+        "url": "git+https://github.com/PuddyClub/Firebase-Express-Template.git"
     },
     "keywords": [
         "express",
@@ -19,9 +19,9 @@
     "author": "Yasmin Seidel (JasminDreasond)",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/TinyPudding/Firebase-Express-Template/issues"
+        "url": "https://github.com/PuddyClub/Firebase-Express-Template/issues"
     },
-    "homepage": "https://github.com/TinyPudding/Firebase-Express-Template#readme",
+    "homepage": "https://github.com/PuddyClub/Firebase-Express-Template#readme",
     "dependencies": {
         "@tinypudding/puddy-lib": "^1.1.40",
         "debug": "^4.3.1",
